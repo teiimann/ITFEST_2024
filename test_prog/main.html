@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDN vs Local Disk</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .image-container {
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        img {
+            width: 200px;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Сравнение скорости загрузки: CDN vs Локальный сервер</h1>
+    <div class="image-container">
+        <div>
+            <h3>CDN</h3>
+            <img id="cdn-image" src="https://via.placeholder.com/300" alt="CDN Image">
+        </div>
+        <div>
+            <h3>Локальный сервер</h3>
+            <img id="local-image" src="local-image.jpg" alt="Local Image">
+        </div>
+    </div>
+    <button onclick="compareLoadTime()">Сравнить скорость</button>
+    <div id="result" class="result"></div>
+
+    <script>
+        function compareLoadTime() {
+            const cdnImage = document.getElementById('cdn-image');
+            const localImage = document.getElementById('local-image');
+            const resultDiv = document.getElementById('result');
+
+            let cdnStart, cdnEnd, localStart, localEnd;
+
+            // CDN Image Timing
+            cdnStart = performance.now();
+            cdnImage.onload = () => {
+                cdnEnd = performance.now();
+                const cdnTime = cdnEnd - cdnStart;
+
+                // Local Image Timing
+                localStart = performance.now();
+                localImage.onload = () => {
+                    localEnd = performance.now();
+                    const localTime = localEnd - localStart;
+
+                    // Display Results
+                    resultDiv.innerHTML = `
+                        Время загрузки через CDN: ${cdnTime.toFixed(2)} мс<br>
+                        Время загрузки через Локальный сервер: ${localTime.toFixed(2)} мс<br>
+                        ${cdnTime < localTime ? 'CDN быстрее!' : 'Локальный сервер быстрее!'}
+                    `;
+                };
+                localImage.src = localImage.src; // Force reload
+            };
+            cdnImage.src = cdnImage.src; // Force reload
+        }
+    </script>
+</body>
+</html>
