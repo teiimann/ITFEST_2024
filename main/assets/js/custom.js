@@ -157,13 +157,19 @@
 			});
 		}
 
-		$("#preloader").animate({
-			'opacity': '0'
-		}, 600, function(){
-			setTimeout(function(){
-				$("#preloader").css("visibility", "hidden").fadeOut();
-			}, 300);
-		});
+		$("#preloader").animate(
+			{ 'opacity': '1' }, 
+			300, // Increase duration for smoother fade-in
+			'swing', // Use easing function for smoothness
+			function() {
+				setTimeout(function() {
+					$("#preloader").fadeOut(700, 'swing', function() {
+						$(this).css("visibility", "hidden");
+					});
+				},300); // Delay before fading out
+			}
+		);
+		
 	});
 
 
